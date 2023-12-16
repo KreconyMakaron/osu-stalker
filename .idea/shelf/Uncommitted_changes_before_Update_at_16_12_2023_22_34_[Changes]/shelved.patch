@@ -1,0 +1,78 @@
+Index: main.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <title>Title</title>\r\n</head>\r\n<body>\r\n\r\n</body>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/main.html b/main.html
+--- a/main.html	(revision 7d0015302d57a9667227914025dac3fa93c9b6f2)
++++ b/main.html	(date 1702761461804)
+@@ -5,6 +5,11 @@
+     <title>Title</title>
+ </head>
+ <body>
++<h1>User ID: </h1>
++<input type="text" id="follow-id" name="User ID">
++<input type="button" id="follow-id-button">
++<label for="user">Choose user:</label>
++<select name="user" id="user-select" form="users">User1</select>
+ 
+ </body>
+ </html>
+\ No newline at end of file
+Index: function.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/function.js b/function.js
+--- a/function.js	(revision 7d0015302d57a9667227914025dac3fa93c9b6f2)
++++ b/function.js	(date 1702762371510)
+@@ -1,0 +1,19 @@
++import browser from 'webextension-polyfill';
++
++// Ustawianie danych w lokalnym magazynie
++browser.storage.local.set({ Users: 'value' })
++    .then(() => {
++        console.log('Dane zapisane.');
++    })
++    .catch(error => {
++        console.error('Błąd podczas zapisywania danych:', error);
++    });
++
++// Odczytywanie danych z lokalnego magazynu
++browser.storage.local.get(['key'])
++    .then(result => {
++        console.log('Odczytane dane:', result.key);
++    })
++    .catch(error => {
++        console.error('Błąd podczas odczytywania danych:', error);
++    });
+Index: package.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/package.json b/package.json
+new file mode 100644
+--- /dev/null	(date 1702762292231)
++++ b/package.json	(date 1702762292231)
+@@ -0,0 +1,17 @@
++{
++  "name": "osu-stalker",
++  "version": "1.0.0",
++  "description": "",
++  "main": "function.js",
++  "scripts": {
++    "test": "echo \"Error: no test specified\" && exit 1"
++  },
++  "repository": {
++    "type": "git",
++    "url": "https://github.com/KreconyMakaron/osu-stalker.git"
++  },
++  "private": true,
++  "dependencies": {
++    "webextension-polyfill": "^0.10.0"
++  }
++}
