@@ -4,7 +4,8 @@
   "description": "jajco",
   "version": "1.0",
   "action": {
-    "default_popup": "main.html"
+    "default_popup": "main.html",
+	"default_icon": "logo.png"
   }
 }
 
