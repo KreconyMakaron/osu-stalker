@@ -9,7 +9,7 @@
     "128": "logo.png"
   },
   "action": {
-    "default_popup": "main.html",
+    "default_popup": "main2dark.html",
     "default_title": "osu!stalker",
     "default_icon": "logo.png"
   }

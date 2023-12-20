@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu');
+
+body {
+    background: rgb(2,0,36);
+    background: linear-gradient(120deg, rgba(2,0,36,1) 0%, rgba(18,19,29,1) 30%, rgba(6,11,103,1) 100%);
+}
+
+h1 {
+    margin: 15px 30px;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    letter-spacing: 5px;
+    text-shadow: 3px 3px 20px #ff99cc,
+    -2px 1px 30px #ff99cc;
+}
+
+input[type=text] {
+/* background-color: lightslategray; */
+    background: rgba(119, 136, 153, .2);
+    outline: none;
+    border: 2px solid ghostwhite;
+    border-radius: 10px;
+    /* margin: 5px 10px; */
+    color: ghostwhite;
+    display: block;
+    margin: 10px auto;
+    width: 75%;
+}
+
+::placeholder {
+    color: ghostwhite;
+    opacity: 1; /* Firefox */
+}
+
+input[type=submit] {
+    background: rgba(119, 136, 153, .4);
+    outline: none;
+    border: 2px solid ghostwhite;
+    border-radius: 10px;
+    color: ghostwhite;
+}
+
+#danesubmit {
+    width: 75px;
+    float: right;
+    margin-top: -25px;
+    margin-bottom: 5px;
+    margin-right: 25px;
+}
+
+
+label {
+    font-weight: bold;
+    color: ghostwhite;
+}
+
+#setting, #back {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+}
+
+select {
+    background: rgba(119, 136, 153, .2);
+    outline: none;
+    border: 2px solid ghostwhite;
+    border-radius: 10px;
+    color: ghostwhite;
+    display: block;
+    margin: auto;
+    width: 120px;
+}
+
+#operation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75px;
+
+}
+
+#pbutton, #ebutton, #rbutton {
+    background: rgba(119, 136, 153, .4);
+    outline: none;
+    border: 2px solid ghostwhite;
+    border-radius: 10px;
+    color: ghostwhite;
+}
+
+input[type=button] {
+    outline: none;
+    border: 2px solid ghostwhite;
+    border-radius: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
