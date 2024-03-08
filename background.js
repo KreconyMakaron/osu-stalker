@@ -1,22 +1,29 @@
 let buffer = {};
-let users_left;
-let old_users;
+let timeoutID;
 
 // hardcoded for now
-let wait_time = 20000;
+let wait_time = 20000; 		//5 minutes
 let ids = [14068656, 25168274]; //filomaster, krecony
 
 const perms = {
-	permissions: [ "tabs", "tabHide", "scripting" ],
+	permissions: ["tabs", "tabHide", "scripting"],
 	origins: ["*://osu.ppy.sh/*"],
 }
 
-function removeOldTabs() {
-	return browser.tabs.query({}).then(tabs => { browser.tabs.remove(tabs.filter(tab => { return tab.url.endsWith("hihi"); }).map((tab) => tab.id)) });
+function removeTabs() {
+    return browser.tabs.query({}).then(tabs => {
+        browser.tabs.remove(tabs.filter(tab => {
+            return tab.url.endsWith("hihi");
+        }).map((tab) => tab.id))
+    });
 }
 
-function removeTabs(id) {
-	return browser.tabs.query({}).then(tabs => { browser.tabs.remove(tabs.filter(tab => { return tab.url.endsWith("hihi") && tab.url.match(/[0-9]+/)[0] == id; }).map((tab) => tab.id)) });
+function removeTabsById(id) {
+    return browser.tabs.query({}).then(tabs => {
+        browser.tabs.remove(tabs.filter(tab => {
+            return tab.url.endsWith("hihi") && tab.url.match(/[0-9]+/)[0] == id;
+        }).map((tab) => tab.id))
+    });
 }
 
 function createTab(url) {
@@ -44,13 +51,10 @@ function updateUser(user_id) {
 		if(temp.length != 0) users[user_id].latest = temp[0].time;
 
 		browser.storage.local.set({users: users});
-		users_left--;
-		if(users_left == 0) ids.forEach((id) => {
-			if(temp.length != 0) console.log(`New posts for ${id}: `, temp);
-			else console.log(`No new posts for ${id}`);
-		})
+		if(temp.length != 0) console.log(`New posts for ${user_id}: `, temp, `\nNew timestamp: ${temp[0].time}`);
+		else console.log(`No new posts for ${user_id}`);
 	});
-	removeTabs(user_id);
+	removeTabsById(user_id);
 }
 
 function handlePosts(msg) {
@@ -69,10 +73,9 @@ function handlePosts(msg) {
 			buffer[msg.user].push(msg.posts);
 			getPosts(msg.user, msg.page + 1);
 		}
-	})
+	});
 }
 
-browser.runtime.onMessage.addListener(handlePosts);
 
 function update() {
 	ids.forEach((user_id) => {
@@ -84,14 +87,13 @@ function update() {
 		if(users == undefined) users = {}
 
 		ids.forEach((user_id) => {
-			if(users[users] == undefined) users[user_id] = {latest: 0}
+			if(users[user_id] == undefined) users[user_id] = {
+				latest: 0,
+			}
 		})
 
-		users_left = ids.length;
-		old_users = users;
-
 		browser.storage.local.set({users: users}).then(() => {
-			removeOldTabs().then(ids.forEach((user_id) => {
+			removeTabs().then(ids.forEach((user_id) => {
 				console.log(`Processing user ${user_id}!`);
 				getPosts(user_id, 1);
 			}))
@@ -103,11 +105,24 @@ function addUser(id) {
 	ids.push(id);
 }
 
-function run() {
-	update();
-	setTimeout(run, wait_time);
+function removeUser(id) {
+	let index = ids.indexOf(id);
+	if(index > -1) ids.splice(index, 1);
 }
 
+function run() {
+	update();
+	timeoutID = setTimeout(run, wait_time);
+}
+
+function reload() {
+	clearTimeout(timeoutID)
+	run();
+}
+
+browser.runtime.onMessage.addListener(handlePosts);
+
+//Entry point
 browser.permissions.contains(perms).then((state) => {
 	if(state == false) console.log("Permissions not granted!");
 	else run();
