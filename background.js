@@ -11,15 +11,6 @@ const perms = {
 	origins: ["*://osu.ppy.sh/*"],
 }
 
-function difference(s1, s2, user) {
-	user_old = s1[user].posts;
-	user_new = s2[user].posts;
-	if(user_old.length == user_new.length) return [];
-	let temp = [];
-	for(let i = 0; i < user_new.length - user_old.length; i += 1) temp.push(user_new[i]);
-	return temp;
-}
-
 function removeOldTabs() {
 	return browser.tabs.query({}).then(tabs => { browser.tabs.remove(tabs.filter(tab => { return tab.url.endsWith("hihi"); }).map((tab) => tab.id)) });
 }
@@ -50,14 +41,12 @@ function updateUser(user_id) {
 	browser.storage.local.get("users").then((users) => {
 		users = users.users;
 		if(temp.length != 0 && temp[temp.length-1].time == users[user_id].time) temp.pop();
-		users[user_id].posts = [].concat(temp, users[user_id].posts);
 		if(temp.length != 0) users[user_id].latest = temp[0].time;
 
 		browser.storage.local.set({users: users});
 		users_left--;
 		if(users_left == 0) ids.forEach((id) => {
-			let diff = difference(old_users, users, id);
-			if(diff.length != 0) console.log(`New posts for ${id}: `, diff);
+			if(temp.length != 0) console.log(`New posts for ${id}: `, temp);
 			else console.log(`No new posts for ${id}`);
 		})
 	});
@@ -95,10 +84,7 @@ function update() {
 		if(users == undefined) users = {}
 
 		ids.forEach((user_id) => {
-			if(users[user_id] == undefined) users[user_id] = {
-				posts: [],
-				latest: 0,
-			}
+			if(users[users] == undefined) users[user_id] = {latest: 0}
 		})
 
 		users_left = ids.length;
@@ -111,6 +97,10 @@ function update() {
 			}))
 		})
 	});
+}
+
+function addUser(id) {
+	ids.push(id);
 }
 
 function run() {
