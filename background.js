@@ -2,7 +2,7 @@ let buffer = {};
 let timeoutID;
 
 // hardcoded for now
-let wait_time = 20000; 		//5 minutes
+let wait_time = 500000; 		//5 minutes
 let ids = [14068656, 25168274]; //filomaster, krecony
 
 const perms = {
